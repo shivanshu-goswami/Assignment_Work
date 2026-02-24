@@ -4,12 +4,12 @@ public class Shelf {
     private String id;
     private String shelfName;
     private String partNumber;
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     public Shelf(){
     }
 
-    public Shelf(String id, String shelfName, String partNumber, boolean isDeleted) {
+    public Shelf(String id, String shelfName, String partNumber, Boolean isDeleted) {
         this.id = id;
         this.shelfName = shelfName;
         this.partNumber = partNumber;
@@ -40,11 +40,11 @@ public class Shelf {
         this.partNumber = partNumber;
     }
 
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return isDeleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }
 }

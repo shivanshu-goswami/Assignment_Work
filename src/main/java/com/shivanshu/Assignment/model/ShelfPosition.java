@@ -2,14 +2,14 @@ package com.shivanshu.Assignment.model;
 
 public class ShelfPosition {
     private String id;
-    private String positionNumber;
+    private int positionNumber;
     private String deviceId;
     private boolean isDeleted;
 
     public ShelfPosition(){
     }
 
-    public ShelfPosition(String id, String positionNumber, String deviceId, boolean isDeleted) {
+    public ShelfPosition(String id, int positionNumber, String deviceId, boolean isDeleted) {
         this.id = id;
         this.positionNumber = positionNumber;
         this.deviceId = deviceId;
@@ -24,11 +24,11 @@ public class ShelfPosition {
         this.id = id;
     }
 
-    public String getPositionNumber() {
+    public int getPositionNumber() {
         return positionNumber;
     }
 
-    public void setPositionNumber(String positionNumber) {
+    public void setPositionNumber(int positionNumber) {
         this.positionNumber = positionNumber;
     }
 
