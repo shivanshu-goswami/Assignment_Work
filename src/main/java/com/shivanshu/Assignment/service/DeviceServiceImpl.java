@@ -1,6 +1,6 @@
 package com.shivanshu.Assignment.service;
 
-import com.shivanshu.Assignment.exception.DeviceNoTFoundException;
+import com.shivanshu.Assignment.exception.DeviceNotFoundException;
 import com.shivanshu.Assignment.model.Device;
 import com.shivanshu.Assignment.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class DeviceServiceImpl implements DeviceService{
 
     @Override
     public Device getDeviceById(String id){
-        return deviceRepository.findById(id).orElseThrow(()->new DeviceNoTFoundException("Device not found with id "+id));
+        return deviceRepository.findById(id).orElseThrow(()->new DeviceNotFoundException("Device not found with id "+id));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DeviceServiceImpl implements DeviceService{
 
     @Override
     public void deleteDevice(String id){
-        Device device=deviceRepository.findById(id).orElseThrow(()->new DeviceNoTFoundException("Device not found with id "+id));
+        Device device=deviceRepository.findById(id).orElseThrow(()->new DeviceNotFoundException("Device not found with id "+id));
         deviceRepository.softDelete(device.getId());
     }
 }

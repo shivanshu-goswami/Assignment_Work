@@ -116,11 +116,19 @@ public class ShelfPositionRepositoryImpl implements ShelfPositionRepository{
     }
     @Override
     public void softDelete(String id) {
-
         try (Session session = driver.session()) {
 
             session.executeWrite(tx -> {
 
+                // Remove relationship if shelf exists
+                tx.run(
+                        "MATCH (sp:ShelfPosition {id: $id}) " +
+                                "OPTIONAL MATCH (sp)-[r:HAS]->(s:Shelf) " +
+                                "DELETE r",
+                        Values.parameters("id", id)
+                );
+
+                // Soft delete shelf position
                 tx.run(
                         "MATCH (sp:ShelfPosition {id: $id}) " +
                                 "SET sp.isDeleted = true",

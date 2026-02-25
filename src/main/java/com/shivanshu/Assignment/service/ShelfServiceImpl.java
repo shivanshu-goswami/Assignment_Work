@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.service;
 
+import com.shivanshu.Assignment.exception.ShelfNotFoundException;
 import com.shivanshu.Assignment.model.Shelf;
 import com.shivanshu.Assignment.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ShelfServiceImpl implements ShelfService {
     //read one shelf using id
     @Override
     public Shelf getShelfById(String id) {
-        return shelfRepository.findShelfById(id).orElseThrow(()->new RuntimeException("Shelf not found with id "+id));
+        return shelfRepository.findShelfById(id).orElseThrow(()->new ShelfNotFoundException("Shelf not found with id "+id));
     }
 
     //read all shelves
@@ -40,6 +41,7 @@ public class ShelfServiceImpl implements ShelfService {
     public List<Shelf> getAllShelves(){
         return shelfRepository.findAll();
     }
+    //delete
     @Override
     public void deleteShelf(String id) {
         //it will ensure that shelf exist, if not exist then getShelf will itself throw error otherwise delete will be called

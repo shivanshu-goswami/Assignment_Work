@@ -1,5 +1,7 @@
 package com.shivanshu.Assignment.service;
 
+import com.shivanshu.Assignment.exception.DeviceNotFoundException;
+import com.shivanshu.Assignment.exception.ShelfPositionNotFoundException;
 import com.shivanshu.Assignment.model.ShelfPosition;
 import com.shivanshu.Assignment.repository.DeviceRepository;
 import com.shivanshu.Assignment.repository.ShelfPositionRepository;
@@ -18,11 +20,11 @@ public class ShelfPositionServiceImpl implements ShelfPositionService {
     }
 
     public ShelfPosition getById(String id) {
-        return shelfPositionRepository.findById(id).orElseThrow(()->new RuntimeException("Shelf Position not found"));
+        return shelfPositionRepository.findById(id).orElseThrow(()->new ShelfPositionNotFoundException("Shelf Position not found with id "+id));
     }
 
     public List<ShelfPosition> getByDeviceId(String deviceId) {
-        deviceRepository.findById(deviceId).orElseThrow(()->new RuntimeException("Device not found"));
+        deviceRepository.findById(deviceId).orElseThrow(()->new DeviceNotFoundException("Device not found with id "+deviceId));
         return shelfPositionRepository.findByDeviceId(deviceId);
     }
 
@@ -30,6 +32,8 @@ public class ShelfPositionServiceImpl implements ShelfPositionService {
         return shelfPositionRepository.findAll();
     }
     public void delete(String id){
+        //just checking existence so that error get automatically handled
+        getById(id);
         shelfPositionRepository.softDelete(id);
     }
 }

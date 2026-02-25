@@ -1,8 +1,12 @@
 package com.shivanshu.Assignment.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Shelf {
     private String id;
+    @NotBlank(message="Shelf name is required")
     private String shelfName;
+    @NotBlank(message="Part number is required")
     private String partNumber;
     private Boolean isDeleted;
 

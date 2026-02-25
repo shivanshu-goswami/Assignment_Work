@@ -1,12 +1,26 @@
 package com.shivanshu.Assignment.model;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class Device {
     private String id;
+
+    @NotBlank(message="Device name is required")
     private String deviceName;
+
+    @NotBlank(message="Part number is required")
     private String partNumber;
+
+    @NotBlank(message="Building name is required")
     private String buildingName;
+
+    @NotBlank(message = "Device Type is required")
     private String deviceType;
+
+    @Min(value=1,message="Number of shelf positions must be at least 1")
     private Integer numberOfShelfPositions;
+
     private Boolean isDeleted;
 
     public Device() {

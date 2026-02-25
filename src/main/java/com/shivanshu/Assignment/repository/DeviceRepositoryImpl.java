@@ -145,17 +145,26 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
     @Override
     public void softDelete(String id) {
-
         try (Session session = driver.session()) {
 
             session.executeWrite(tx -> {
 
+                // Soft delete device
                 tx.run(
                         "MATCH (d:Device {id: $id}) " +
                                 "SET d.isDeleted = true",
                         Values.parameters("id", id)
                 );
 
+                // Remove relationships from ShelfPositions to Shelves
+                tx.run(
+                        "MATCH (d:Device {id: $id})-[:HAS]->(sp:ShelfPosition) " +
+                                "OPTIONAL MATCH (sp)-[r:HAS]->(s:Shelf) " +
+                                "DELETE r",
+                        Values.parameters("id", id)
+                );
+
+                // Soft delete shelf positions
                 tx.run(
                         "MATCH (d:Device {id: $id})-[:HAS]->(sp:ShelfPosition) " +
                                 "SET sp.isDeleted = true",

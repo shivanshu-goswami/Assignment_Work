@@ -2,6 +2,7 @@ package com.shivanshu.Assignment.controller;
 
 import com.shivanshu.Assignment.model.Device;
 import com.shivanshu.Assignment.service.DeviceService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class DeviceController {
     }
     //creating device
     @PostMapping
-    public Device createDevice(@RequestBody Device device) {
+    public Device createDevice(@Valid @RequestBody Device device) {
         return deviceService.createDevice(device);
     }
     //get all the devices

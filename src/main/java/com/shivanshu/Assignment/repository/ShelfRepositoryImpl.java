@@ -1,5 +1,7 @@
 package com.shivanshu.Assignment.repository;
 
+import com.shivanshu.Assignment.exception.ShelfPositionNotFoundException;
+import com.shivanshu.Assignment.exception.ShelfPositionOccupiedException;
 import com.shivanshu.Assignment.model.Shelf;
 
 import org.neo4j.driver.*;
@@ -33,7 +35,7 @@ public class ShelfRepositoryImpl implements ShelfRepository{
                 );
 
                 if (!spResult.hasNext()) {
-                    throw new RuntimeException("ShelfPosition not found or deleted");
+                    throw new ShelfPositionNotFoundException("ShelfPosition not found or deleted");
                 }
 
                 // is checks if my ShelfPosition already has a Shelf
@@ -45,7 +47,7 @@ public class ShelfRepositoryImpl implements ShelfRepository{
                 );
 
                 if (existingShelf.hasNext()) {
-                    throw new RuntimeException("ShelfPosition already occupied");
+                    throw new ShelfPositionOccupiedException("ShelfPosition already occupied");
                 }
 
                 // now we can safely create Shelf and relationship
@@ -135,22 +137,19 @@ public class ShelfRepositoryImpl implements ShelfRepository{
     }
     @Override
     public void softDelete(String id) {
-
         try (Session session = driver.session()) {
 
             session.executeWrite(tx -> {
 
-                //  Soft deleting shelf
-                tx.run(
-                        "MATCH (s:Shelf {id: $id}) " +
-                                "SET s.isDeleted = true",
-                        Values.parameters("id", id)
-                );
-
-                //  Remove relationship to free ShelfPosition
                 tx.run(
                         "MATCH (sp:ShelfPosition)-[r:HAS]->(s:Shelf {id: $id}) " +
                                 "DELETE r",
+                        Values.parameters("id", id)
+                );
+
+                tx.run(
+                        "MATCH (s:Shelf {id: $id}) " +
+                                "SET s.isDeleted = true",
                         Values.parameters("id", id)
                 );
 
@@ -158,5 +157,6 @@ public class ShelfRepositoryImpl implements ShelfRepository{
             });
         }
     }
+
 
 }
