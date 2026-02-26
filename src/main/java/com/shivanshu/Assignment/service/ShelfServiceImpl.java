@@ -41,6 +41,18 @@ public class ShelfServiceImpl implements ShelfService {
     public List<Shelf> getAllShelves(){
         return shelfRepository.findAll();
     }
+
+    @Override
+    public Shelf updateShelf(String shelfPositionId,Shelf shelf) {
+        //not needed these checks here as it will be handled by getShelfById below
+        if(shelfPositionId==null ||shelfPositionId.isBlank() ){
+            throw new IllegalArgumentException("Shelf position id is required");
+        }
+        //it checks if shelf exist with this id or not and throws exception if not
+        getShelfById(shelfPositionId);
+        //now can call this safely as we have checked shelf existence so can update now without any error or exception
+        return shelfRepository.updateShelf(shelfPositionId,shelf);
+    }
     //delete
     @Override
     public void deleteShelf(String id) {

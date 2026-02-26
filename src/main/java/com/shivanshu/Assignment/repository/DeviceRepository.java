@@ -9,5 +9,6 @@ public interface DeviceRepository {
     Device createDevice(Device device);
     Optional<Device> findById(String id);
     List<Device> findAll();
+    Device updateDevice(String id,Device device);
     void softDelete(String id);
 }

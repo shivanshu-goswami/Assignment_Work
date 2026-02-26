@@ -30,6 +30,13 @@ public class DeviceServiceImpl implements DeviceService{
     public List<Device> getAllDevices(){
         return deviceRepository.findAll();
     }
+    @Override
+    public Device updateDevice(String id, Device device){
+        //it will throw error if device with this id doesn't exist so exceptio handled here
+        getDeviceById(id);
+        //now calling this is safe and we don't need to throw anything or return null as it wouldnt' have been called if device with given id doesnt exist
+        return deviceRepository.updateDevice(id, device);
+    }
 
     @Override
     public void deleteDevice(String id){

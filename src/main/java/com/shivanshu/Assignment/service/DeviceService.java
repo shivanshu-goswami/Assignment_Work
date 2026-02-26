@@ -8,5 +8,6 @@ public interface DeviceService {
     Device createDevice(Device device);
     Device getDeviceById(String id);
     List<Device> getAllDevices();
+    Device updateDevice(String id, Device device);
     void deleteDevice(String id);
 }

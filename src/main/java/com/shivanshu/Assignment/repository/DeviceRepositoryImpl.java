@@ -143,6 +143,51 @@ public class DeviceRepositoryImpl implements DeviceRepository {
             });
         }
     }
+
+    @Override
+    public Device updateDevice(String id, Device device) {
+
+        try (Session session = driver.session()) {
+
+            return session.executeWrite(tx -> {
+
+                Result result = tx.run(
+                        "MATCH (d:Device {id: $id, isDeleted: false}) " +
+                                "SET d.deviceName = $deviceName, " +
+                                "    d.partNumber = $partNumber, " +
+                                "    d.buildingName = $buildingName, " +
+                                "    d.deviceType = $deviceType " +
+                                "RETURN d",
+                        Values.parameters(
+                                "id", id,
+                                "deviceName", device.getDeviceName(),
+                                "partNumber", device.getPartNumber(),
+                                "buildingName", device.getBuildingName(),
+                                "deviceType", device.getDeviceType()
+                        )
+                );
+                //we have already checked excception in service layer that device exist so
+                //writing it here doesn't benifits code but wrote it just for code flow and clarity
+                if (!result.hasNext()) {
+                    return null;
+                }
+
+                Record record = result.single();
+                Node node = record.get("d").asNode();
+
+                Device updated = new Device();
+                updated.setId(node.get("id").asString());
+                updated.setDeviceName(node.get("deviceName").asString());
+                updated.setPartNumber(node.get("partNumber").asString());
+                updated.setBuildingName(node.get("buildingName").asString());
+                updated.setDeviceType(node.get("deviceType").asString());
+                updated.setNumberOfShelfPositions(node.get("numberOfShelfPositions").asInt());
+
+                return updated;
+            });
+        }
+    }
+
     @Override
     public void softDelete(String id) {
         try (Session session = driver.session()) {

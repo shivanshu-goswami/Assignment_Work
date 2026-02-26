@@ -3,6 +3,7 @@ package com.shivanshu.Assignment.controller;
 import com.shivanshu.Assignment.model.Shelf;
 import com.shivanshu.Assignment.repository.ShelfRepository;
 import com.shivanshu.Assignment.service.ShelfService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public class ShelfController {
     @GetMapping("/{id}")
     public Shelf getShelfById(@PathVariable String id) {
         return shelfService.getShelfById(id);
+    }
+
+    //update shelf
+    @PutMapping("/{id}")
+    public Shelf updateShelfById(@PathVariable String id,@Valid @RequestBody Shelf shelf) {
+        return shelfService.updateShelf(id, shelf);
     }
 
     //delete Shelf

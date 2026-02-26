@@ -84,7 +84,52 @@ class DeviceServiceImplTest {
         verify(deviceRepository).findAll();
     }
 
-   //deleting device
+    //writing test for update device method
+
+    @Test
+    void updateDevice_ShouldReturnUpdatedDevice() {
+
+        Device input = new Device();
+        input.setDeviceName("Updated Router");
+
+        Device existing = new Device();
+        existing.setId("1");
+
+        Device updated = new Device();
+        updated.setId("1");
+        updated.setDeviceName("Updated Router");
+
+        when(deviceRepository.findById("1")).thenReturn(Optional.of(existing));
+
+        when(deviceRepository.updateDevice("1", input))
+                .thenReturn(updated);
+
+        Device result = deviceService.updateDevice("1", input);
+
+        assertEquals("1", result.getId());
+        assertEquals("Updated Router", result.getDeviceName());
+
+        verify(deviceRepository).findById("1");
+        verify(deviceRepository).updateDevice("1", input);
+    }
+
+    @Test
+    void updateDevice_ShouldThrowException_WhenDeviceNotFound() {
+
+        Device input = new Device();
+
+        when(deviceRepository.findById("1"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(DeviceNotFoundException.class,
+                () -> deviceService.updateDevice("1", input));
+
+        verify(deviceRepository).findById("1");
+        verify(deviceRepository, never()).updateDevice(anyString(), any());
+    }
+
+
+    //deleting device
 
     @Test
     void deleteDevice_ShouldDeleteSuccessfully() {

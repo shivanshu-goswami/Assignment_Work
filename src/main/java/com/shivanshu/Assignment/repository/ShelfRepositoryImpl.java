@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.repository;
 
+import com.shivanshu.Assignment.exception.ShelfNotFoundException;
 import com.shivanshu.Assignment.exception.ShelfPositionNotFoundException;
 import com.shivanshu.Assignment.exception.ShelfPositionOccupiedException;
 import com.shivanshu.Assignment.model.Shelf;
@@ -135,6 +136,48 @@ public class ShelfRepositoryImpl implements ShelfRepository{
             });
         }
     }
+
+    @Override
+    public Shelf updateShelf(String id, Shelf shelf) {
+
+        try (Session session = driver.session()) {
+
+            return session.executeWrite(tx -> {
+
+                Result check = tx.run(
+                        "MATCH (s:Shelf {id: $id}) " +
+                                "WHERE s.isDeleted = false " +
+                                "RETURN s",
+                        Values.parameters("id", id)
+                );
+                //already handled exceptio of shelf not exist in service layer
+                //so this code won't even execute as it is already checked and then only
+                //update shelf has been called
+                if (!check.hasNext()) {
+                   return null;
+                }
+
+                tx.run(
+                        "MATCH (s:Shelf {id: $id}) " +
+                                "SET s.shelfName = $shelfName, " +
+                                "s.partNumber = $partNumber " +
+                                "RETURN s",
+                        Values.parameters(
+                                "id", id,
+                                "shelfName", shelf.getShelfName(),
+                                "partNumber", shelf.getPartNumber()
+                        )
+                );
+                //this shelf which was sent by user  was already an updated shelf
+                //so we updated our db with it and then we can return it to user
+                //as an assurance that shelf is update and we just need to make sure
+                //its id is set to the id of previous shelf which was intended to update
+                shelf.setId(id);
+                return shelf;
+            });
+        }
+    }
+
     @Override
     public void softDelete(String id) {
         try (Session session = driver.session()) {

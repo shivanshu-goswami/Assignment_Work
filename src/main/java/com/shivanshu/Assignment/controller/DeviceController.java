@@ -29,6 +29,11 @@ public class DeviceController {
     public Device getDeviceById(@PathVariable String id) {
         return deviceService.getDeviceById(id);
     }
+    //update Device
+    @PutMapping("/{id}")
+    public Device updateDevice(@PathVariable String id,@Valid @RequestBody Device device) {
+        return deviceService.updateDevice(id, device);
+    }
     //Deleting Device
     @DeleteMapping("/{id}")
     public String deleteDevice(@PathVariable String id) {

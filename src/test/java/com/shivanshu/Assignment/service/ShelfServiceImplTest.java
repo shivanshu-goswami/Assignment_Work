@@ -40,7 +40,7 @@ class ShelfServiceImplTest {
         Shelf result = shelfService.createShelf("sp1", shelf);
 
         assertNotNull(result);
-//        verify(shelfRepository).createShelf("sp1", shelf);
+        verify(shelfRepository).createShelf("sp1", shelf);
         assertEquals(result,shelf);
     }
 
@@ -135,6 +135,58 @@ class ShelfServiceImplTest {
         List<Shelf> result = shelfService.getAllShelves();
 
         assertEquals(2, result.size());
+    }
+
+    //update shelf test case
+    @Test
+    void updateShelf_ShouldReturnUpdatedShelf() {
+
+        Shelf existing = new Shelf();
+        existing.setId("1");
+        existing.setShelfName("Old Shelf");
+
+        Shelf input = new Shelf();
+        input.setShelfName("Updated Shelf");
+        input.setPartNumber("P100");
+
+        Shelf updated = new Shelf();
+        updated.setId("1");
+        updated.setShelfName("Updated Shelf");
+        updated.setPartNumber("P100");
+
+        when(shelfRepository.findShelfById("1"))
+                .thenReturn(Optional.of(existing));
+
+        when(shelfRepository.updateShelf("1", input))
+                .thenReturn(updated);
+
+        Shelf result = shelfService.updateShelf("1", input);
+
+        assertEquals("1", result.getId());
+        assertEquals("Updated Shelf", result.getShelfName());
+
+        verify(shelfRepository).findShelfById("1");
+        verify(shelfRepository).updateShelf("1", input);
+    }
+
+    @Test
+    void updateShelf_ShouldThrowException_WhenShelfNotFound() {
+
+        Shelf input = new Shelf();
+        input.setShelfName("Updated Shelf");
+
+        //we set this because whenever we call update, first findShelfById is called
+        //and checks if shelf exist which we want to update
+        when(shelfRepository.findShelfById("1"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(ShelfNotFoundException.class,
+                () -> shelfService.updateShelf("1", input));
+        //it ensures that shelfById is called only once when we call update
+        verify(shelfRepository).findShelfById("1");
+        //it ensures that update shelf is never called as id don't exist
+        //so exception must be thrown by findShelfById only
+        verify(shelfRepository, never()).updateShelf(anyString(), any());
     }
 
     //testing delete any shelf method
