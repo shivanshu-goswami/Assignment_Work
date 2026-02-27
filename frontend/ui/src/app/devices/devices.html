@@ -1,0 +1,20 @@
+<p>Total Devices : {{devices.length}} </p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Actions</th>
+  </tr>
+
+  @for (device of devices; track device.id) {
+    <tr>
+      <td>{{device.id}}</td>
+      <td>{{device.deviceName}}</td>
+      <td>
+        <button>View</button>
+        <button>Edit</button>
+        <button (click)="deleteDevice(device.id!)">Delete</button>
+      </td>
+    </tr>
+  }
+</table>
