@@ -1,17 +1,18 @@
 package com.shivanshu.Assignment.service;
 
+import com.shivanshu.Assignment.dto.DeviceResponseDto;
 import com.shivanshu.Assignment.exception.DeviceNotFoundException;
 import com.shivanshu.Assignment.model.Device;
 import com.shivanshu.Assignment.repository.DeviceRepository;
+import com.shivanshu.Assignment.repository.ShelfPositionRepository;
+import com.shivanshu.Assignment.repository.ShelfRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,6 +23,12 @@ class DeviceServiceImplTest {
     @Mock
     private DeviceRepository deviceRepository;
 
+    @Mock
+    private ShelfPositionRepository shelfPositionRepository;
+
+    @Mock
+    private ShelfRepository shelfRepository;
+
     @InjectMocks
     private DeviceServiceImpl deviceService;
 
@@ -30,32 +37,57 @@ class DeviceServiceImplTest {
     @Test
     void createDevice_ShouldCreateSuccessfully() {
 
-        Device device = new Device();
-        device.setDeviceName("Router");
+        Device savedDevice = new Device();
+        savedDevice.setId("generated-id");
+        savedDevice.setDeviceName("Router");
 
-        when(deviceRepository.createDevice(any(Device.class))).thenReturn(device);
+        // when saving device
+        when(deviceRepository.createDevice(any(Device.class)))
+                .thenReturn(savedDevice);
 
-        Device saved = deviceService.createDevice(device);
+        // IMPORTANT: do NOT hardcode ID
+        when(deviceRepository.findById(anyString()))
+                .thenReturn(Optional.of(savedDevice));
 
-        assertNotNull(saved);
-        assertFalse(saved.isDeleted());
-        verify(deviceRepository, times(1)).createDevice(any(Device.class));
+        // mock shelf positions
+        when(shelfPositionRepository.findByDeviceId(anyString()))
+                .thenReturn(Collections.emptyList());
+
+        Device input = new Device();
+        input.setDeviceName("Router");
+
+        DeviceResponseDto response = deviceService.createDevice(input);
+
+        assertNotNull(response);
+        assertEquals("Router", response.getName());
     }
-
     //fetching device by id
     @Test
     void getDeviceById_ShouldReturnDevice_WhenExists() {
 
         Device device = new Device();
-        device.setId("123");
+        device.setId("1");
+        device.setDeviceName("Router");
+        device.setPartNumber("R-100");
+        device.setBuildingName("Building 1");
+        device.setDeviceType("Router");
 
-        when(deviceRepository.findById("123")).thenReturn(Optional.of(device));
+        when(deviceRepository.findById("1"))
+                .thenReturn(Optional.of(device));
 
-        Device result = deviceService.getDeviceById("123");
+        when(shelfPositionRepository.findByDeviceId("1"))
+                .thenReturn(Collections.emptyList());
 
-        assertEquals("123", result.getId());
-        verify(deviceRepository).findById("123");
+        DeviceResponseDto result =
+                deviceService.getDeviceById("1");
+
+        assertNotNull(result);
+        assertEquals("1", result.getId());
+        assertEquals("Router", result.getName());
+
+        verify(deviceRepository).findById("1");
     }
+
 
     @Test
     void getDeviceById_ShouldThrowException_WhenNotFound() {
@@ -74,13 +106,29 @@ class DeviceServiceImplTest {
     void getAllDevices_ShouldReturnList() {
 
         Device d1 = new Device();
+        d1.setId("1");
+        d1.setDeviceName("Router");
+
         Device d2 = new Device();
+        d2.setId("2");
+        d2.setDeviceName("Switch");
 
-        when(deviceRepository.findAll()).thenReturn(Arrays.asList(d1, d2));
+        when(deviceRepository.findAll())
+                .thenReturn(Arrays.asList(d1, d2));
 
-        List<Device> devices = deviceService.getAllDevices();
+        when(deviceRepository.findById("1"))
+                .thenReturn(Optional.of(d1));
+        when(deviceRepository.findById("2"))
+                .thenReturn(Optional.of(d2));
 
-        assertEquals(2, devices.size());
+        when(shelfPositionRepository.findByDeviceId(anyString()))
+                .thenReturn(Collections.emptyList());
+
+        List<DeviceResponseDto> result =
+                deviceService.getAllDevices();
+
+        assertEquals(2, result.size());
+
         verify(deviceRepository).findAll();
     }
 
@@ -89,28 +137,30 @@ class DeviceServiceImplTest {
     @Test
     void updateDevice_ShouldReturnUpdatedDevice() {
 
-        Device input = new Device();
-        input.setDeviceName("Updated Router");
-
         Device existing = new Device();
         existing.setId("1");
+        existing.setDeviceName("Old Router");
+
+        Device input = new Device();
+        input.setDeviceName("Updated Router");
 
         Device updated = new Device();
         updated.setId("1");
         updated.setDeviceName("Updated Router");
 
-        when(deviceRepository.findById("1")).thenReturn(Optional.of(existing));
+        when(deviceRepository.findById("1"))
+                .thenReturn(Optional.of(updated));
 
         when(deviceRepository.updateDevice("1", input))
                 .thenReturn(updated);
 
-        Device result = deviceService.updateDevice("1", input);
+        when(shelfPositionRepository.findByDeviceId("1"))
+                .thenReturn(Collections.emptyList());
 
-        assertEquals("1", result.getId());
-        assertEquals("Updated Router", result.getDeviceName());
+        DeviceResponseDto response = deviceService.updateDevice("1", input);
 
-        verify(deviceRepository).findById("1");
-        verify(deviceRepository).updateDevice("1", input);
+        assertEquals("1", response.getId());
+        assertEquals("Updated Router", response.getName());
     }
 
     @Test

@@ -2,46 +2,53 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Device {
-  id?: string;
-  deviceName: string;
+export interface Shelf {
+  id: string;
+  shelfName: string;
   partNumber: string;
-  buildingName: string;
-  deviceType: string;
-  //optional because during create we send it but during update we don't send it
-  numberOfShelfPositions?:number;
 }
-//this makes the service globally available, like same as @Service in spring
+
+export interface ShelfPosition {
+  id: string;
+  positionNumber: number;
+  shelf: Shelf | null;
+}
+
+export interface Device {
+  id: string;
+  name: string;
+  partNumber: string;
+  building: string;
+  type: string;
+  shelfPositions: ShelfPosition[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
-  //this is our backend  endpoint, it must match our spring controller mapping
-  private apiUrl = 'http://localhost:8080/devices';
 
-  //angular built-in tool to call backend APIs
+  private baseUrl = 'http://localhost:8080/devices';
+
   constructor(private http: HttpClient) {}
 
-  //Angular does async calls using RxJS Observables.
-  //We can think of it like:"Future result that will come later"
-  //like same as Completable future
   getAllDevices(): Observable<Device[]> {
-    return this.http.get<Device[]>(this.apiUrl);
+    return this.http.get<Device[]>(this.baseUrl);
   }
 
   getDeviceById(id: string): Observable<Device> {
-    return this.http.get<Device>(`${this.apiUrl}/${id}`);
+    return this.http.get<Device>(`${this.baseUrl}/${id}`);
   }
 
-  createDevice(device: Device): Observable<Device> {
-    return this.http.post<Device>(this.apiUrl, device);
+  createDevice(device: any): Observable<Device> {
+    return this.http.post<Device>(this.baseUrl, device);
   }
 
   updateDevice(id: string, device: Device): Observable<Device> {
-    return this.http.put<Device>(`${this.apiUrl}/${id}`, device);
+    return this.http.put<Device>(`${this.baseUrl}/${id}`, device);
   }
 
-  deleteDevice(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteDevice(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

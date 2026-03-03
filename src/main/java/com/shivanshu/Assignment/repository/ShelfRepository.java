@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ShelfRepository {
     Shelf createShelf(String ShelfPositionId ,Shelf shelf);
     Optional<Shelf> findShelfById(String id);
+    Optional<Shelf> findShelfByShelfPositionId(String shelfPositionId);
     List<Shelf> findAll();
     Shelf updateShelf(String id,Shelf shelf);
     void softDelete(String id);

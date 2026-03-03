@@ -1,0 +1,18 @@
+<h2>Create Shelf</h2>
+
+<div>
+  <label>Name:</label>
+  <input [(ngModel)]="shelf.shelfName" />
+</div>
+
+<br />
+
+<div>
+  <label>Part Number:</label>
+  <input [(ngModel)]="shelf.partNumber" />
+</div>
+
+<br />
+
+<button (click)="createShelf()">Create</button>
+<button routerLink="/devices">Cancel</button>

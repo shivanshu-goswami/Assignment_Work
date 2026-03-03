@@ -1,0 +1,13 @@
+<h2>Create Device</h2>
+
+<input [(ngModel)]="device.name" placeholder="Device Name">
+<input [(ngModel)]="device.partNumber" placeholder="Part Number">
+<input [(ngModel)]="device.building" placeholder="Building">
+<input [(ngModel)]="device.type" placeholder="Device Type">
+
+<input type="number"
+       [(ngModel)]="device.numberOfShelfPositions"
+       min="1"
+       placeholder="Number of Shelf Positions">
+
+<button (click)="create()">Create</button>

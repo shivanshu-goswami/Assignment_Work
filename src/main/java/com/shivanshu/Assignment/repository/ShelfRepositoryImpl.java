@@ -103,6 +103,39 @@ public class ShelfRepositoryImpl implements ShelfRepository{
             });
         }
     }
+
+    @Override
+    public Optional<Shelf> findShelfByShelfPositionId(String shelfPositionId) {
+
+        try (Session session = driver.session()) {
+
+            return session.executeRead(tx -> {
+
+                Result result = tx.run(
+                        "MATCH (sp:ShelfPosition {id: $spId})-[:HAS]->(s:Shelf) " +
+                                "WHERE s.isDeleted = false " +
+                                "RETURN s",
+                        Values.parameters("spId", shelfPositionId)
+                );
+
+                if (!result.hasNext()) {
+                    return Optional.empty();
+                }
+
+                Record record = result.next();
+                Node node = record.get("s").asNode();
+
+                Shelf shelf = new Shelf();
+                shelf.setId(node.get("id").asString());
+                shelf.setShelfName(node.get("shelfName").asString());
+                shelf.setPartNumber(node.get("partNumber").asString());
+                shelf.setDeleted(node.get("isDeleted").asBoolean());
+
+                return Optional.of(shelf);
+            });
+        }
+    }
+
     @Override
     public List<Shelf> findAll() {
 

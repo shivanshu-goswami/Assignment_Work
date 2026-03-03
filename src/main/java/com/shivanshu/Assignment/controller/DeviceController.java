@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.controller;
 
+import com.shivanshu.Assignment.dto.DeviceResponseDto;
 import com.shivanshu.Assignment.model.Device;
 import com.shivanshu.Assignment.service.DeviceService;
 import jakarta.validation.Valid;
@@ -16,22 +17,22 @@ public class DeviceController {
     }
     //creating device
     @PostMapping
-    public Device createDevice(@Valid @RequestBody Device device) {
+    public DeviceResponseDto createDevice(@Valid @RequestBody Device device) {
         return deviceService.createDevice(device);
     }
     //get all the devices
     @GetMapping
-    public List<Device> getAllDevices() {
+    public List<DeviceResponseDto> getAllDevices() {
         return deviceService.getAllDevices();
     }
     //getting a device using id
     @GetMapping("/{id}")
-    public Device getDeviceById(@PathVariable String id) {
+    public DeviceResponseDto getDeviceById(@PathVariable String id) {
         return deviceService.getDeviceById(id);
     }
     //update Device
     @PutMapping("/{id}")
-    public Device updateDevice(@PathVariable String id,@Valid @RequestBody Device device) {
+    public DeviceResponseDto updateDevice(@PathVariable String id,@Valid @RequestBody Device device) {
         return deviceService.updateDevice(id, device);
     }
     //Deleting Device

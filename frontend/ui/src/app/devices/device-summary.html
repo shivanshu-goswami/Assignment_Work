@@ -1,0 +1,33 @@
+<h2>Device Summary</h2>
+
+@if (device) {
+
+<p><b>Name:</b> {{ device.name }}</p>
+<p><b>Part Number:</b> {{ device.partNumber }}</p>
+<p><b>Building:</b> {{ device.building }}</p>
+<p><b>Type:</b> {{ device.type }}</p>
+
+<button (click)="enableEdit()">Edit</button>
+<button (click)="delete()">Delete</button>
+
+<hr>
+
+<h3>Shelf Positions</h3>
+
+@for (sp of device.shelfPositions; track sp.id) {
+
+<div style="border:1px solid black; padding:10px; margin:10px 0;">
+  <p><b>Position {{ sp.positionNumber }}</b></p>
+
+  @if (sp.shelf) {
+  <p>
+    Shelf: {{ sp.shelf.shelfName }}
+    ({{ sp.shelf.partNumber }})
+  </p>
+  } @else {
+  <button (click)="addShelf(sp.id)">Add Shelf</button>
+  }
+</div>
+
+}
+}

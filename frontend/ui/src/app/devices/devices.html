@@ -1,20 +1,30 @@
-<p>Total Devices : {{devices.length}} </p>
-<table>
+<h2>Devices</h2>
+
+<button routerLink="/devices/create">Create Device</button>
+
+<table class="device-table">
+  <thead>
   <tr>
-    <th>ID</th>
     <th>Name</th>
+    <th>Part</th>
+    <th>Building</th>
+    <th>Type</th>
     <th>Actions</th>
   </tr>
+  </thead>
 
-  @for (device of devices; track device.id) {
-    <tr>
-      <td>{{device.id}}</td>
-      <td>{{device.deviceName}}</td>
-      <td>
-        <button>View</button>
-        <button>Edit</button>
-        <button (click)="deleteDevice(device.id!)">Delete</button>
-      </td>
-    </tr>
+  <tbody>
+  @for (device of devices; track $index) {
+  <tr>
+    <td>{{ device.name }}</td>
+    <td>{{ device.partNumber }}</td>
+    <td>{{ device.building }}</td>
+    <td>{{ device.type }}</td>
+    <td>
+      <button (click)="viewDevice(device.id)">View</button>
+      <button (click)="deleteDevice(device.id)">Delete</button>
+    </td>
+  </tr>
   }
+  </tbody>
 </table>

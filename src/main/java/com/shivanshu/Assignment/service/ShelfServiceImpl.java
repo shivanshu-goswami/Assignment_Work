@@ -6,6 +6,7 @@ import com.shivanshu.Assignment.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,6 +35,10 @@ public class ShelfServiceImpl implements ShelfService {
     @Override
     public Shelf getShelfById(String id) {
         return shelfRepository.findShelfById(id).orElseThrow(()->new ShelfNotFoundException("Shelf not found with id "+id));
+    }
+    @Override
+    public Optional<Shelf> findShelfByShelfPositionId(String shelfPositionId) {
+        return shelfRepository.findShelfById(shelfPositionId);
     }
 
     //read all shelves

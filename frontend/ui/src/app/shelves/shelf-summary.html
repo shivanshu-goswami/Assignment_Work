@@ -1,0 +1,23 @@
+<h2>Shelf Summary</h2>
+
+@if (shelf) {
+
+<div>
+  <label>Name:</label>
+  <input [(ngModel)]="shelf.shelfName" />
+</div>
+
+<br />
+
+<div>
+  <label>Part Number:</label>
+  <input [(ngModel)]="shelf.partNumber" />
+</div>
+
+<br />
+
+<button (click)="updateShelf()">Update</button>
+<button (click)="deleteShelf()">Delete</button>
+<button routerLink="/shelves">Back</button>
+
+}

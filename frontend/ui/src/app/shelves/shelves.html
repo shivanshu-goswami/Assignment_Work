@@ -1,0 +1,25 @@
+<h2>All Shelves</h2>
+
+<table border="1" cellpadding="5">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Part Number</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  @for (shelf of shelves; track shelf.id) {
+  <tr>
+    <td>{{ shelf.shelfName }}</td>
+    <td>{{ shelf.partNumber }}</td>
+    <td>
+      <button [routerLink]="['/shelves', shelf.id]">View</button>
+      <button (click)="deleteShelf(shelf.id!)">Delete</button>
+    </td>
+  </tr>
+  }
+  </tbody>
+</table>
+<p *ngIf="shelves.length === 0">No shelves found</p>
