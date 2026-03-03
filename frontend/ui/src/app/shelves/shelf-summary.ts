@@ -1,39 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ShelfService, Shelf } from '../services/shelf.service';
+import { CommonModule } from '@angular/common';
+import { ShelfService, ShelfSummary } from '../services/shelf.service';
 
 @Component({
   selector: 'app-shelf-summary',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './shelf-summary.html'
 })
-export class ShelfSummary implements OnInit {
+export class ShelfSummaryComponent implements OnInit {
 
-  shelf!: Shelf;
+  shelf!: ShelfSummary;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private shelfService: ShelfService
+    private shelfService: ShelfService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')!;
-    this.shelfService.getShelfById(id).subscribe({
-      next: data => this.shelf = data
-    });
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.shelfService.getShelfSummary(id).subscribe({
+        next: (data) => {
+          this.shelf = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error(err)
+      });
+    }
   }
 
   updateShelf() {
-    this.shelfService.updateShelf(this.shelf.id!, this.shelf).subscribe({
+    if (!this.shelf.id) return;
+
+    this.shelfService.updateShelf(this.shelf.id, this.shelf as any).subscribe({
       next: () => alert('Shelf Updated Successfully')
     });
   }
 
   deleteShelf() {
-    this.shelfService.deleteShelf(this.shelf.id!).subscribe({
+    if (!this.shelf.id) return;
+
+    this.shelfService.deleteShelf(this.shelf.id).subscribe({
       next: () => this.router.navigate(['/shelves'])
     });
   }

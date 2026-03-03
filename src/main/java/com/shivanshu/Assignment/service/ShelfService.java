@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.service;
 
+import com.shivanshu.Assignment.dto.ShelfSummaryResponseDto;
 import com.shivanshu.Assignment.model.Shelf;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ShelfService {
     List<Shelf> getAllShelves();
     Shelf updateShelf(String shelfPositionId,Shelf shelf);
     void deleteShelf(String id);
+    ShelfSummaryResponseDto getShelfSummary(String shelfId);
 }

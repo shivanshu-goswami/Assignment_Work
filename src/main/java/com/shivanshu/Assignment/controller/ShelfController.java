@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.controller;
 
+import com.shivanshu.Assignment.dto.ShelfSummaryResponseDto;
 import com.shivanshu.Assignment.model.Shelf;
 import com.shivanshu.Assignment.repository.ShelfRepository;
 import com.shivanshu.Assignment.service.ShelfService;
@@ -44,5 +45,10 @@ public class ShelfController {
     public String deleteShelf(@PathVariable String id) {
         shelfService.deleteShelf(id);
         return "Shelf deleted successfully";
+    }
+    //get mapping for shelf summary
+    @GetMapping("/{id}/summary")
+    public ShelfSummaryResponseDto getShelfSummary(@PathVariable String id) {
+        return shelfService.getShelfSummary(id);
     }
 }

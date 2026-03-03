@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.repository;
 
+import com.shivanshu.Assignment.dto.ShelfSummaryResponseDto;
 import com.shivanshu.Assignment.model.Shelf;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ShelfRepository {
     List<Shelf> findAll();
     Shelf updateShelf(String id,Shelf shelf);
     void softDelete(String id);
+    Optional<ShelfSummaryResponseDto> getShelfSummary(String shelfId);
 }

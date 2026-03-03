@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.service;
 
+import com.shivanshu.Assignment.dto.ShelfSummaryResponseDto;
 import com.shivanshu.Assignment.exception.ShelfNotFoundException;
 import com.shivanshu.Assignment.model.Shelf;
 import com.shivanshu.Assignment.repository.ShelfRepository;
@@ -64,5 +65,16 @@ public class ShelfServiceImpl implements ShelfService {
         //it will ensure that shelf exist, if not exist then getShelf will itself throw error otherwise delete will be called
         getShelfById(id);
         shelfRepository.softDelete(id);
+    }
+    //summary implementation cause needed in frontend
+    @Override
+    public ShelfSummaryResponseDto getShelfSummary(String shelfId) {
+
+        if (shelfId == null || shelfId.isBlank()) {
+            throw new IllegalArgumentException("Shelf id is required");
+        }
+
+        return shelfRepository.getShelfSummary(shelfId)
+                .orElseThrow(() -> new ShelfNotFoundException("Shelf not found with id: " + shelfId));
     }
 }

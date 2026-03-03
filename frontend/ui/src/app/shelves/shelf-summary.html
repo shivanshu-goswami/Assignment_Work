@@ -1,23 +1,26 @@
 <h2>Shelf Summary</h2>
 
-@if (shelf) {
+<div *ngIf="shelf">
 
-<div>
-  <label>Name:</label>
-  <input [(ngModel)]="shelf.shelfName" />
+  <p><strong>ID:</strong> {{ shelf.id }}</p>
+  <p><strong>Name:</strong> {{ shelf.shelfName }}</p>
+  <p><strong>Part Number:</strong> {{ shelf.partNumber }}</p>
+
+  <hr>
+
+  <div *ngIf="shelf.positionNumber; else noPosition">
+    <p><strong>Position Number:</strong> {{ shelf.positionNumber }}</p>
+    <p><strong>Device Name:</strong> {{ shelf.deviceName || 'Not Attached To Device' }}</p>
+  </div>
+
+  <ng-template #noPosition>
+    <p><strong>Status:</strong> Not attached to any device position</p>
+  </ng-template>
+
+  <br>
+
+  <button (click)="updateShelf()">Update</button>
+  <button (click)="deleteShelf()">Delete</button>
+  <button routerLink="/shelves">Back</button>
+
 </div>
-
-<br />
-
-<div>
-  <label>Part Number:</label>
-  <input [(ngModel)]="shelf.partNumber" />
-</div>
-
-<br />
-
-<button (click)="updateShelf()">Update</button>
-<button (click)="deleteShelf()">Delete</button>
-<button routerLink="/shelves">Back</button>
-
-}

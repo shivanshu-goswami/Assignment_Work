@@ -1,5 +1,6 @@
 package com.shivanshu.Assignment.repository;
 
+import com.shivanshu.Assignment.dto.ShelfSummaryResponseDto;
 import com.shivanshu.Assignment.exception.ShelfNotFoundException;
 import com.shivanshu.Assignment.exception.ShelfPositionNotFoundException;
 import com.shivanshu.Assignment.exception.ShelfPositionOccupiedException;
@@ -234,5 +235,62 @@ public class ShelfRepositoryImpl implements ShelfRepository{
         }
     }
 
+    @Override
+    public Optional<ShelfSummaryResponseDto> getShelfSummary(String shelfId) {
+
+        try (Session session = driver.session()) {
+
+            return session.executeRead(tx -> {
+
+                Result result = tx.run(
+                        """
+                        MATCH (s: Shelf {id: $id})
+                        WHERE s.isDeleted = false
+                        OPTIONAL MATCH (d:Device)-[:HAS]->(sp:ShelfPosition)-[:HAS]->(s)
+                        RETURN s.id AS id,
+                               s.shelfName AS shelfName,
+                               s.partNumber AS partNumber,
+                               sp.positionNumber AS positionNumber,
+                               d.id AS deviceId,
+                               d.deviceName AS deviceName
+                        """,
+                        Values.parameters("id", shelfId)
+                );
+
+                if (!result.hasNext()) {
+                    return Optional.empty();
+                }
+
+                Record record = result.next();
+
+                String id = record.get("id").asString();
+                String shelfName = record.get("shelfName").asString();
+                String partNumber = record.get("partNumber").asString();
+
+                Integer positionNumber = record.get("positionNumber").isNull()
+                        ? null
+                        : record.get("positionNumber").asInt();
+
+                String deviceId = record.get("deviceId").isNull()
+                        ? null
+                        : record.get("deviceId").asString();
+
+                String deviceName = record.get("deviceName").isNull()
+                        ? null
+                        : record.get("deviceName").asString();
+
+                return Optional.of(
+                        new ShelfSummaryResponseDto(
+                                id,
+                                shelfName,
+                                partNumber,
+                                positionNumber,
+                                deviceId,
+                                deviceName
+                        )
+                );
+            });
+        }
+    }
 
 }

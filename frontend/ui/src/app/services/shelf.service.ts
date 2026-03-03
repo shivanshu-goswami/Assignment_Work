@@ -9,6 +9,14 @@ export interface Shelf {
   shelfPositionId?: string;
   deviceName?: string;
 }
+export interface ShelfSummary {
+  id?: string;
+  shelfName: string;
+  partNumber: string;
+  shelfPositionId?: string;
+  deviceName?: string;
+  positionNumber?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -38,4 +46,9 @@ export class ShelfService {
   deleteShelf(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  getShelfSummary(id: string): Observable<ShelfSummary> {
+    return this.http.get<ShelfSummary>(`${this.baseUrl}/${id}/summary`);
+  }
+
 }
