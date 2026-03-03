@@ -12,7 +12,6 @@ import { RouterLink } from '@angular/router';
     <br /><br />
 
     <button routerLink="/shelves">View All Shelves</button>
-    <button routerLink="/shelves/create">Create Shelf</button>
   `
 })
 export class Home {}

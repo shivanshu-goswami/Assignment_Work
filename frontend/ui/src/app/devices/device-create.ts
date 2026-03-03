@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DeviceService } from '../services/device.service';
 
 @Component({
   selector: 'app-device-create',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './device-create.html'
 })
 export class DeviceCreate {
 
   device: any = {
-    name: '',
+    deviceName: '',
     partNumber: '',
-    building: '',
-    type: '',
+    buildingName: '',
+    deviceType: '',
     numberOfShelfPositions: 1
   };
 

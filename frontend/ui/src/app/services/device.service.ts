@@ -14,7 +14,7 @@ export interface ShelfPosition {
   shelf: Shelf | null;
 }
 
-export interface Device {
+export interface DeviceResponse {
   id: string;
   name: string;
   partNumber: string;
@@ -22,6 +22,16 @@ export interface Device {
   type: string;
   shelfPositions: ShelfPosition[];
 }
+
+export interface DeviceRequest {
+  id?: string;
+  deviceName: string;
+  partNumber: string;
+  buildingName: string;
+  deviceType: string;
+  numberOfShelfPositions: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -32,20 +42,20 @@ export class DeviceService {
 
   constructor(private http: HttpClient) {}
 
-  getAllDevices(): Observable<Device[]> {
-    return this.http.get<Device[]>(this.baseUrl);
+  getAllDevices(): Observable<DeviceResponse[]> {
+    return this.http.get<DeviceResponse[]>(this.baseUrl);
   }
 
-  getDeviceById(id: string): Observable<Device> {
-    return this.http.get<Device>(`${this.baseUrl}/${id}`);
+  getDeviceById(id: string): Observable<DeviceResponse> {
+    return this.http.get<DeviceResponse>(`${this.baseUrl}/${id}`);
   }
 
-  createDevice(device: any): Observable<Device> {
-    return this.http.post<Device>(this.baseUrl, device);
+  createDevice(device: DeviceRequest): Observable<DeviceResponse> {
+    return this.http.post<DeviceResponse>(this.baseUrl, device);
   }
 
-  updateDevice(id: string, device: Device): Observable<Device> {
-    return this.http.put<Device>(`${this.baseUrl}/${id}`, device);
+  updateDevice(id: string, device: DeviceRequest): Observable<DeviceResponse> {
+    return this.http.put<DeviceResponse>(`${this.baseUrl}/${id}`, device);
   }
 
   deleteDevice(id: string): Observable<any> {

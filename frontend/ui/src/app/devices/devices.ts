@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { DeviceService, Device } from '../services/device.service';
+import { DeviceService, DeviceResponse} from '../services/device.service';
 
 @Component({
   selector: 'app-devices',
@@ -11,7 +11,7 @@ import { DeviceService, Device } from '../services/device.service';
 })
 export class Devices implements OnInit {
 
-  devices: Device[] = [];
+  devices: DeviceResponse[] = [];
 
   constructor(
     private deviceService: DeviceService,

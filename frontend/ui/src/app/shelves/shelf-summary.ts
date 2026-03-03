@@ -35,11 +35,19 @@ export class ShelfSummaryComponent implements OnInit {
     }
   }
 
+  editMode=false;
+  enableEdit(){
+    this.editMode= true;
+    }
+
   updateShelf() {
     if (!this.shelf.id) return;
 
     this.shelfService.updateShelf(this.shelf.id, this.shelf as any).subscribe({
-      next: () => alert('Shelf Updated Successfully')
+      next: () => {
+        this.editMode=false;
+        this.cdr.detectChanges();
+        }
     });
   }
 

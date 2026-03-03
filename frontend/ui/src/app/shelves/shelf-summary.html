@@ -1,26 +1,35 @@
 <h2>Shelf Summary</h2>
 
-<div *ngIf="shelf">
+@if (shelf) {
 
-  <p><strong>ID:</strong> {{ shelf.id }}</p>
-  <p><strong>Name:</strong> {{ shelf.shelfName }}</p>
-  <p><strong>Part Number:</strong> {{ shelf.partNumber }}</p>
+<!-- VIEW MODE -->
+@if (!editMode) {
 
-  <hr>
+<p><strong>ID:</strong> {{ shelf.id }}</p>
+<p><strong>Name:</strong> {{ shelf.shelfName }}</p>
+<p><strong>Part Number:</strong> {{ shelf.partNumber }}</p>
 
-  <div *ngIf="shelf.positionNumber; else noPosition">
-    <p><strong>Position Number:</strong> {{ shelf.positionNumber }}</p>
-    <p><strong>Device Name:</strong> {{ shelf.deviceName || 'Not Attached To Device' }}</p>
-  </div>
+<hr>
 
-  <ng-template #noPosition>
-    <p><strong>Status:</strong> Not attached to any device position</p>
-  </ng-template>
+@if (shelf.positionNumber) {
+<p><strong>Position:</strong> {{ shelf.positionNumber }}</p>
+<p><strong>Device:</strong> {{ shelf.deviceName }}</p>
+} @else {
+<p><strong>Status:</strong> Not attached to any device position</p>
+}
 
-  <br>
+<button (click)="enableEdit()">Edit</button>
+<button (click)="deleteShelf()">Delete</button>
+<button routerLink="/shelves">Back</button>
+}
 
-  <button (click)="updateShelf()">Update</button>
-  <button (click)="deleteShelf()">Delete</button>
-  <button routerLink="/shelves">Back</button>
+<!-- EDIT MODE -->
+@if (editMode) {
 
-</div>
+<input [(ngModel)]="shelf.shelfName" placeholder="Shelf Name">
+<input [(ngModel)]="shelf.partNumber" placeholder="Part Number">
+
+<button (click)="updateShelf()">Save</button>
+<button (click)="editMode = false">Cancel</button>
+}
+}

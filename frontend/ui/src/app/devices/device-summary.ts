@@ -1,15 +1,20 @@
+import {DeviceResponse,DeviceRequest} from '../services/device.service'
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DeviceService, Device } from '../services/device.service';
+import { ActivatedRoute, Router,RouterLink} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import { DeviceService } from '../services/device.service';
 
 @Component({
   selector: 'app-device-summary',
   standalone: true,
+  imports: [CommonModule,FormsModule,RouterLink],
   templateUrl: './device-summary.html'
 })
 export class DeviceSummary implements OnInit {
 
-  device!: Device;
+  device!: DeviceRequest;
+  deviceResponse!:DeviceResponse;
   editMode = false;
 
   constructor(
@@ -22,9 +27,18 @@ export class DeviceSummary implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.deviceService.getDeviceById(id).subscribe({
-      next: (data) => {
-        this.device = data;
-        this.cdr.detectChanges();  // ✅ keep CDR
+      next: (data:DeviceResponse) => {
+        this.deviceResponse=data;
+
+        this.device = {
+          id: data.id,
+          deviceName: data.name,
+          partNumber: data.partNumber,
+          buildingName: data.building,
+          deviceType: data.type,
+          numberOfShelfPositions: data.shelfPositions?.length || 1
+        };
+        this.cdr.detectChanges();
       }
     });
   }
@@ -34,9 +48,19 @@ export class DeviceSummary implements OnInit {
   }
 
   update() {
+    if(!this.device.id) return;
     this.deviceService.updateDevice(this.device.id, this.device).subscribe({
       next: (updated) => {
-        this.device = updated;
+        this.deviceResponse = updated;
+
+        this.device = {
+          id: updated.id,
+          deviceName: updated.name,
+          partNumber: updated.partNumber,
+          buildingName: updated.building,
+          deviceType: updated.type,
+          numberOfShelfPositions: updated.shelfPositions?.length || 1
+        };
         this.editMode = false;
         this.cdr.detectChanges();
       }
@@ -44,7 +68,8 @@ export class DeviceSummary implements OnInit {
   }
 
   delete() {
-    this.deviceService.deleteDevice(this.device.id).subscribe(() => {
+    if(!this.deviceResponse?.id) return;
+    this.deviceService.deleteDevice(this.deviceResponse.id).subscribe(() => {
       this.router.navigate(['/devices']);
     });
   }
