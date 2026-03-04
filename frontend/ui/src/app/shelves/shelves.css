@@ -1,14 +1,13 @@
-.device-table {
+table {
   border-collapse: collapse;
   width: 100%;
 }
 
-.device-table th,
-.device-table td {
+th, td {
   border: 1px solid black;
   padding: 6px;
 }
 
-button{
-margin-right: 4px;
+button {
+  margin-right: 4px;
 }

@@ -1,0 +1,20 @@
+.shelf-summary {
+  width: 350px;
+  margin: 40px auto;
+}
+
+.shelf-summary p {
+  margin: 6px 0;
+}
+
+.shelf-summary input {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+}
+
+.shelf-summary button {
+  margin-right: 6px;
+  padding: 6px 12px;
+}

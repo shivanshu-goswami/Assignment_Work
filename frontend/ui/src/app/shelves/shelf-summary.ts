@@ -8,6 +8,7 @@ import { ShelfService, ShelfSummary } from '../services/shelf.service';
   selector: 'app-shelf-summary',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
+  styleUrls: ['./shelf-summary.css'],
   templateUrl: './shelf-summary.html'
 })
 export class ShelfSummaryComponent implements OnInit {

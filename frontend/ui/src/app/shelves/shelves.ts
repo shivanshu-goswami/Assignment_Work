@@ -7,6 +7,7 @@ import { ShelfService, Shelf } from '../services/shelf.service';
   selector: 'app-shelves',
   standalone: true,
   imports: [CommonModule, RouterLink],
+  styleUrls: ['./shelves.css'],
   templateUrl: './shelves.html'
 })
 export class Shelves implements OnInit {

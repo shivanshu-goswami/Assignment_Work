@@ -8,6 +8,7 @@ import { DeviceService } from '../services/device.service';
   selector: 'app-device-create',
   standalone: true,
   imports: [CommonModule,FormsModule],
+  styleUrls: ['./device-create.css'],
   templateUrl: './device-create.html'
 })
 export class DeviceCreate {

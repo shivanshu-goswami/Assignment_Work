@@ -1,0 +1,20 @@
+.device-summary {
+  width: 400px;
+  margin: 40px auto;
+}
+
+.device-summary p {
+  margin: 6px 0;
+}
+
+.device-summary input {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+}
+
+.device-summary button {
+  margin-right: 6px;
+  padding: 6px 12px;
+}

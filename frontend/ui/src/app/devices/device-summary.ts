@@ -9,6 +9,7 @@ import { DeviceService } from '../services/device.service';
   selector: 'app-device-summary',
   standalone: true,
   imports: [CommonModule,FormsModule,RouterLink],
+  styleUrls: ['./device-summary.css'],
   templateUrl: './device-summary.html'
 })
 export class DeviceSummary implements OnInit {

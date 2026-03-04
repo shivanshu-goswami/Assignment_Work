@@ -7,6 +7,7 @@ import { ShelfService, Shelf } from '../services/shelf.service';
   selector: 'app-shelf-create',
   standalone: true,
   imports: [FormsModule, RouterLink],
+  styleUrls: ['./shelf-create.css'],
   templateUrl: './shelf-create.html'
 })
 export class ShelfCreate implements OnInit {

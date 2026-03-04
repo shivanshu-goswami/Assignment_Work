@@ -1,0 +1,16 @@
+.create-shelf {
+  width: 250px;
+  margin: 40px auto;
+}
+
+.create-shelf input {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+}
+
+.create-shelf button {
+  margin-right: 6px;
+  padding: 6px 12px;
+}
