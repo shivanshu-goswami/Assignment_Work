@@ -88,6 +88,11 @@ export class DeviceSummary implements OnInit {
       queryParams: { shelfPositionId }
     });
   }
+  addExistingShelf(shelfPositionId: string){
+    this.router.navigate(['/shelves/addShelf'],{
+      queryParams:{shelfPositionId}
+      });
+    }
 }
 
 //note: device!-> this exclaimation is Definite Assignment Assertion Operator, it basically tells

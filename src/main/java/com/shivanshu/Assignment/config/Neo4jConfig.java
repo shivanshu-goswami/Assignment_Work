@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Neo4jConfig {
+    //this annotation helps to read database connection properties from application.properties file
     @Value("${neo4j.url}")
     private String url;
 
@@ -18,8 +19,10 @@ public class Neo4jConfig {
     @Value("${neo4j.password}")
     private String password;
 
+    //one mistake don't repeat - make it a bean cause repository layer needs it so bean will help to automatically inject it there
     @Bean
-    public Driver neo4jDriver() {
+    public Driver neo4jDriver() { //this is a neo4j java driver, helps us in establishing a connection to the neo4j database
+        //this graphDatabase driver creates a driver connection means connect to neo4j,authenticate and create driver
         return GraphDatabase.driver(url, AuthTokens.basic(username, password));
     }
 }

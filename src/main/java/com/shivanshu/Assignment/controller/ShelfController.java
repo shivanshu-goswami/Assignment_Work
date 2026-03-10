@@ -22,6 +22,12 @@ public class ShelfController {
     public Shelf createShelf(@PathVariable String shelfPositionId, @RequestBody Shelf shelf) {
         return shelfService.createShelf(shelfPositionId, shelf);
     }
+
+    @PostMapping("/attach/{shelfId}/{shelfPositionId}")
+    public Shelf attachExistingShelf(@PathVariable String shelfId,@PathVariable String shelfPositionId) {
+        return shelfService.attachExistingShelf(shelfId,shelfPositionId);
+    }
+
     //read all
     @GetMapping
     public List<Shelf> getAllShelves() {
@@ -32,6 +38,11 @@ public class ShelfController {
     @GetMapping("/{id}")
     public Shelf getShelfById(@PathVariable String id) {
         return shelfService.getShelfById(id);
+    }
+
+    @GetMapping("/unattached")
+    public List<Shelf> getUnattachedShelves() {
+        return shelfService.getUnattachedShelves();
     }
 
     //update shelf

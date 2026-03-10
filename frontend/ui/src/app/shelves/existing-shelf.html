@@ -1,0 +1,22 @@
+<h2> Existing shelves</h2>
+<table class="device-table">
+  <thead>
+  <tr>
+    <th>shelfName</th>
+    <th>partNumber</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  @for (shelf of shelves; track $index) {
+  <tr>
+    <td>{{ shelf.shelfName }}</td>
+    <td>{{ shelf.partNumber }}</td>
+    <td>
+      <button (click)="addShelfToSp(shelf.id!)">Add Shelf</button>
+    </td>
+  </tr>
+  }
+  </tbody>
+</table>

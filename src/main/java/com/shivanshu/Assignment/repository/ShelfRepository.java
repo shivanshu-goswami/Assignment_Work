@@ -11,7 +11,10 @@ public interface ShelfRepository {
     Optional<Shelf> findShelfById(String id);
     Optional<Shelf> findShelfByShelfPositionId(String shelfPositionId);
     List<Shelf> findAll();
+    List<Shelf> getUnattachedShelves();
     Shelf updateShelf(String id,Shelf shelf);
     void softDelete(String id);
     Optional<ShelfSummaryResponseDto> getShelfSummary(String shelfId);
+
+    Shelf attachExistingShelf(String shelfId, String shelfPositionId);
 }

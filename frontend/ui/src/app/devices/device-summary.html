@@ -42,7 +42,8 @@
   ({{ sp.shelf.partNumber }})
 </p>
 } @else {
-<button (click)="addShelf(sp.id)">Add Shelf</button>
+  <button (click)="addShelf(sp.id)">Add Shelf</button>
+  <button (click)="addExistingShelf(sp.id)">Add Existing Shelf</button>
 }
 
 <hr>

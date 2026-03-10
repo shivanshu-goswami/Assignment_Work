@@ -73,6 +73,39 @@ public class ShelfRepositoryImpl implements ShelfRepository{
             });
         }
     }
+
+    @Override
+    public Shelf attachExistingShelf(String shelfId, String shelfPositionId) {
+
+        try(Session session = driver.session()){
+
+            return session.executeWrite(tx -> {
+
+                Result result = tx.run(
+                        "MATCH (sp:ShelfPosition {id:$spId}) " +
+                                "MATCH (s:Shelf {id:$sId}) " +
+                                "CREATE (sp)-[:HAS]->(s) " +
+                                "RETURN s",
+                        Values.parameters(
+                                "spId", shelfPositionId,
+                                "sId", shelfId
+                        )
+                );
+
+                Record record = result.single();
+                Node node = record.get("s").asNode();
+
+                Shelf shelf = new Shelf();
+                shelf.setId(node.get("id").asString());
+                shelf.setShelfName(node.get("shelfName").asString());
+                shelf.setPartNumber(node.get("partNumber").asString());
+                shelf.setDeleted(node.get("isDeleted").asBoolean());
+
+                return shelf;
+            });
+        }
+    }
+
     @Override
     public Optional<Shelf> findShelfById(String id) {
 
@@ -147,6 +180,41 @@ public class ShelfRepositoryImpl implements ShelfRepository{
                 Result result = tx.run(
                         "MATCH (s:Shelf) " +
                                 "WHERE s.isDeleted = false " +
+                                "RETURN s"
+                );
+
+                List<Shelf> shelves = new ArrayList<>();
+
+                while (result.hasNext()) {
+
+                    Record record = result.next();
+                    Node node = record.get("s").asNode();
+
+                    Shelf shelf = new Shelf();
+                    shelf.setId(node.get("id").asString());
+                    shelf.setShelfName(node.get("shelfName").asString());
+                    shelf.setPartNumber(node.get("partNumber").asString());
+                    shelf.setDeleted(node.get("isDeleted").asBoolean());
+
+                    shelves.add(shelf);
+                }
+
+                return shelves;
+            });
+        }
+    }
+
+    @Override
+    public List<Shelf> getUnattachedShelves() {
+
+        try (Session session = driver.session()) {
+
+            return session.executeRead(tx -> {
+
+                Result result = tx.run(
+                        "MATCH (s:Shelf) " +
+                                "WHERE s.isDeleted = false " +
+                                "AND NOT (s)<-[:HAS]-(:ShelfPosition) " +
                                 "RETURN s"
                 );
 

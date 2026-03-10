@@ -42,10 +42,16 @@ export const routes: Routes = [
       import('./shelves/shelf-create').then(m => m.ShelfCreate)
   },
 
+ {
+ path:'shelves/addShelf',
+ loadComponent:()=> import('./shelves/existing-shelf').then(m=>m.ExistingShelf)
+ },
+
   {
     path: 'shelves/:id',
     loadComponent: () =>
       import('./shelves/shelf-summary').then(m => m.ShelfSummaryComponent)
   }
+
 
 ];

@@ -202,11 +202,11 @@ public class DeviceRepositoryImpl implements DeviceRepository {
                 );
 
                 // Soft delete shelves attached to those shelf positions
-                tx.run(
-                        "MATCH (d:Device {id:$id})-[:HAS]->(sp:ShelfPosition)-[:HAS]->(s:Shelf) " +
-                                "SET s.isDeleted = true",
-                        Values.parameters("id", id)
-                );
+//                tx.run(
+//                        "MATCH (d:Device {id:$id})-[:HAS]->(sp:ShelfPosition)-[:HAS]->(s:Shelf) " +
+//                                "SET s.isDeleted = true",
+//                        Values.parameters("id", id)
+//                );
 
                 // Remove relationships from ShelfPositions to Shelves
                 tx.run(

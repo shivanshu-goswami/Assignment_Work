@@ -32,6 +32,11 @@ public class ShelfServiceImpl implements ShelfService {
         return shelfRepository.createShelf(shelfPositionId,shelf);
     }
 
+    @Override
+    public Shelf attachExistingShelf(String shelfId,String shelfPositionId) {
+        return shelfRepository.attachExistingShelf(shelfId,shelfPositionId);
+    }
+
     //read one shelf using id
     @Override
     public Shelf getShelfById(String id) {
@@ -46,6 +51,11 @@ public class ShelfServiceImpl implements ShelfService {
     @Override
     public List<Shelf> getAllShelves(){
         return shelfRepository.findAll();
+    }
+
+    @Override
+    public List<Shelf> getUnattachedShelves(){
+        return shelfRepository.getUnattachedShelves();
     }
 
     @Override

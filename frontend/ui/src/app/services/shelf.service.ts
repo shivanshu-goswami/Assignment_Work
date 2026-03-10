@@ -52,4 +52,11 @@ export class ShelfService {
     return this.http.get<ShelfSummary>(`${this.baseUrl}/${id}/summary`);
   }
 
+  getUnattachedShelves():Observable<Shelf[]>{
+    return this.http.get<Shelf[]>(`${this.baseUrl}/unattached`);
+    }
+  attachExistingShelf(shelfId:string,shelfPositionId:string):Observable<Shelf>{
+    return this.http.post<Shelf>(`${this.baseUrl}/attach/${shelfId}/${shelfPositionId}`,null);
+    }
+
 }

@@ -11,7 +11,10 @@ public interface ShelfService {
     Shelf getShelfById(String id);
     Optional<Shelf> findShelfByShelfPositionId(String shelfPositionId);
     List<Shelf> getAllShelves();
+    List<Shelf> getUnattachedShelves();
     Shelf updateShelf(String shelfPositionId,Shelf shelf);
     void deleteShelf(String id);
     ShelfSummaryResponseDto getShelfSummary(String shelfId);
+
+    Shelf attachExistingShelf(String shelfId, String shelfPositionId);
 }
