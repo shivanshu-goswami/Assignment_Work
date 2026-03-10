@@ -27,6 +27,7 @@ export class ShelfSummaryComponent implements OnInit {
 
     if (id) {
       this.shelfService.getShelfSummary(id).subscribe({
+        //this data is actually the response that i get back after making api call to backend from service file
         next: (data) => {
           this.shelf = data;
           this.cdr.detectChanges();
@@ -43,7 +44,9 @@ export class ShelfSummaryComponent implements OnInit {
 
   updateShelf() {
     if (!this.shelf.id) return;
-
+    //passed it as 'any' because update in backend expects only 2 fields partNumber and shelfName
+    //but shelf here is summary one which has more properties so either create a new object with
+    //2 property as shelfName and partNumber and then pass that object only or else pass it as any
     this.shelfService.updateShelf(this.shelf.id, this.shelf as any).subscribe({
       next: () => {
         this.editMode=false;
@@ -53,6 +56,7 @@ export class ShelfSummaryComponent implements OnInit {
   }
 
   deleteShelf() {
+    //this is non-null assertion as shelf id is marked as optional but delete shelf expects string so it cant be null so to ensure typescript it isnt null we put this exclamation
     if (!this.shelf.id) return;
 
     this.shelfService.deleteShelf(this.shelf.id).subscribe({

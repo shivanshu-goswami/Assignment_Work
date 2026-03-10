@@ -43,6 +43,7 @@ export class ShelfService {
     return this.http.put<Shelf>(`${this.baseUrl}/${id}`, shelf);
   }
 
+  //observable<any> because delete mostly returns 204 status code i.e, no content
   deleteShelf(id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }

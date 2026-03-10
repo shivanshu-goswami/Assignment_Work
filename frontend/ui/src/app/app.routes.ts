@@ -4,7 +4,10 @@ export const routes: Routes = [
 
   {
     path: '',
+    //lazy loading, can do it simply also through component but can it can make my website slow
+    //when there are many pages as it loads all pages when app starts
     loadComponent: () =>
+    //here m is module so angular loads home.ts
       import('./home/home').then(m => m.Home)
   },
 
@@ -21,6 +24,7 @@ export const routes: Routes = [
   },
 
   {
+    //dynamic route(route parameter and it will be passed on to component), we will fetch the id value param through activated route in device summary ts file
     path: 'devices/:id',
     loadComponent: () =>
       import('./devices/device-summary').then(m => m.DeviceSummary)

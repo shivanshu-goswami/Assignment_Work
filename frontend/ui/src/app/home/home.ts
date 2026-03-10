@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   styleUrl: './home.css',
+  //very small html that's why didn't created another file for it
   template: `
   <div class="home-container">
     <button routerLink="/devices">View All Devices</button>

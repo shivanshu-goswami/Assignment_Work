@@ -1,6 +1,6 @@
 <h2>All Shelves</h2>
 
-<table border="1" cellpadding="5">
+<table>
   <thead>
   <tr>
     <th>Name</th>
@@ -10,16 +10,19 @@
   </thead>
 
   <tbody>
+<!--  I tracked shelf.id so that angular can detect which row changed-->
   @for (shelf of shelves; track shelf.id) {
   <tr>
     <td>{{ shelf.shelfName }}</td>
     <td>{{ shelf.partNumber }}</td>
     <td>
       <button [routerLink]="['/shelves', shelf.id]">View</button>
+<!--      this exclamation mark(non-null assertion)  guarantees that this value is not null or undefined and we need this guarantee because we have made id as optional so it can be null but here we need to assure it is string thats why-->
       <button (click)="deleteShelf(shelf.id!)">Delete</button>
     </td>
   </tr>
   }
   </tbody>
 </table>
+<!--I can also use @if in place of this directive *ngIf-->
 <p *ngIf="shelves.length === 0">No shelves found</p>

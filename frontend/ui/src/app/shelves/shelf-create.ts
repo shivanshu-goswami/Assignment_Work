@@ -16,7 +16,7 @@ export class ShelfCreate implements OnInit {
     shelfName: '',
     partNumber: ''
   };
-
+//this exclamation assures that we will initialise its value in future but not initialised it immediately
   shelfPositionId!: string;
 
   constructor(
@@ -31,9 +31,7 @@ export class ShelfCreate implements OnInit {
   }
 
   createShelf() {
-    this.shelfService
-      .createShelf(this.shelfPositionId, this.shelf)
-      .subscribe({
+    this.shelfService.createShelf(this.shelfPositionId, this.shelf).subscribe({
         next: () => this.router.navigate(['/devices'])
       });
   }
